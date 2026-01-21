@@ -1,7 +1,5 @@
-#spring.application.name=order
+#spring.application.name=product
 spring:
-  application:
-    name: order
   datasource:
     url: jdbc:postgresql://ep-spring-tooth-ah910vfj-pooler.c-3.us-east-1.aws.neon.tech/neondb?sslmode=require&channel_binding=require
     username: neondb_owner
@@ -15,4 +13,4 @@ spring:
     database-platform: org.hibernate.dialect.PostgreSQLDialect
 
 server:
-  port: 8084
+  port: 8083
