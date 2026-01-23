@@ -2,9 +2,15 @@
 spring:
   datasource:
     url: jdbc:postgresql://ep-spring-tooth-ah910vfj-pooler.c-3.us-east-1.aws.neon.tech/neondb?sslmode=require&channel_binding=require
-    username: neondb_owner
-    password: npg_jSoLxefag8R0
+    username: ${DB_USER}
+    password: ${DB_PASSWORD}
     driver-class-name: org.postgresql.Driver
+
+  rabbitmq:
+    host: localhost
+    port: 5672
+    username: guest
+    password: guest
   jpa:
     database: POSTGRESQL
     show-sql: true
@@ -12,5 +18,15 @@ spring:
       ddl-auto: update
     database-platform: org.hibernate.dialect.PostgreSQLDialect
 
+
 server:
   port: 8083
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: "*"
+
+app:
+  message: "Hello"
