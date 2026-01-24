@@ -1,5 +1,6 @@
 package com.ecommerce.order.clients;
 
+import org.apache.catalina.User;
 import org.springframework.cloud.client.loadbalancer.LoadBalanced;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -11,19 +12,18 @@ import org.springframework.web.service.invoker.HttpServiceProxyFactory;
 import java.util.Optional;
 
 @Configuration
-public class ProductServiceClientConfig {
-
+public class UserServiceClientConfig {
 
     @Bean
-    public ProductServiceClient productClientInterface(RestClient.Builder restClientBuilder){
-        RestClient restClient = restClientBuilder.baseUrl("http://product-service")
-                .defaultStatusHandler(HttpStatusCode::is4xxClientError ,
-                        (request , response) -> Optional.empty())
+    public UserServiceClient userClientInterface(RestClient.Builder restClientBuilder) {
+        RestClient restClient = restClientBuilder.baseUrl("http://user-service")
+                .defaultStatusHandler(HttpStatusCode::is4xxClientError,
+                        (request, response) -> Optional.empty())
                 .build();
         RestClientAdapter adapter = RestClientAdapter.create(restClient);
         HttpServiceProxyFactory factory = HttpServiceProxyFactory
                 .builderFor(adapter).build();
-        ProductServiceClient productServiceClient = factory.createClient(ProductServiceClient.class);
-        return  productServiceClient;
+        UserServiceClient userServiceClient = factory.createClient(UserServiceClient.class);
+        return userServiceClient;
     }
 }
