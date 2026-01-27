@@ -29,6 +29,25 @@ services:
       - backend
     restart: unless-stopped
 
+#  zipkin:
+#    image: openzipkin/zipkin
+#    container_name: zipkin
+#    ports:
+#      - 9411:9411
+#    networks:
+#      - backend
+
+  mongodb:
+    container_name: mongodb_container
+    image: mongo:latest
+    ports:
+      - "27017:27017"  # Maps container port to localhost:27017
+    volumes:
+      - mongo_data:/data/db
+    networks:
+      - backend
+    restart: unless-stopped
+
   rabbitmq:
     container_name: rabbitmq
     image: rabbitmq:3-management
@@ -49,3 +68,4 @@ networks:
 volumes:
   postgres:
   pgadmin:
+  mongo_data:
