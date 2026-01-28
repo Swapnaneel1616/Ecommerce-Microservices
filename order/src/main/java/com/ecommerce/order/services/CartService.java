@@ -31,13 +31,9 @@ public class CartService {
 
     @Autowired
     private ProductServiceClient productServiceClient;
-
-
     @Autowired
     private UserServiceClient userServiceClient;
 
-//    @Autowired
-////    private UserRepository userRepository;
 
     public boolean addToCart(String userId, CartItemRequest request) {
         //Look for product
@@ -62,8 +58,6 @@ public class CartService {
         }
         else{
             CartItem cartItem = new CartItem();
-            // previously this mistakenly set the userId to the (still-null) cartItem.getUserId();
-            // set the userId from the incoming parameter so the item is actually associated with the user
             cartItem.setUserId(userId);
             cartItem.setProductId(request.getProductId());
             cartItem.setQuantity(request.getQuantity());
