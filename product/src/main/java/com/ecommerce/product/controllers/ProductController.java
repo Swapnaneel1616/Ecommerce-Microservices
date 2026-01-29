@@ -54,6 +54,14 @@ public class ProductController {
         return ResponseEntity.ok(productService.searchProducts(keyword));
     }
 
+    @GetMapping("/simulate")
+    public ResponseEntity<String> simulateFailure(@RequestParam(defaultValue = "false") boolean fail){
+        if(fail){
+            throw new RuntimeException("Simulated Failure for Testing");
+        }
+        return ResponseEntity.ok("Product Service is OK");
+    }
+
 
 
 }
