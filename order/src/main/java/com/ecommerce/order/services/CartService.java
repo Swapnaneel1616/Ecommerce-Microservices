@@ -77,10 +77,11 @@ public class CartService {
         return false;
     }
 
-    public boolean deleteItemFromCart(UserResponse userId, String productId) {
+    public boolean deleteItemFromCart(String userId, String productId) {
 //        Optional<Product> productOpt = productRepository.findById(productId);
 //        Optional<User> userOpt = userRepository.findById(Long.valueOf(userId));
-        CartItem cartItem = cartItemRepository.findByUserIdAndProductId(String.valueOf(userServiceClient.getUserDetails(String.valueOf(userId))), productId);
+        UserResponse userResponse = userServiceClient.getUserDetails(userId);
+        CartItem cartItem = cartItemRepository.findByUserIdAndProductId(userId, productId);
         if(cartItem != null){
             cartItemRepository.delete(cartItem);
             return true;
@@ -88,8 +89,8 @@ public class CartService {
         return false;
     }
 
-    public List<CartItem> getCart(UserResponse userId) {
-        return cartItemRepository.findByUserId(String.valueOf(userServiceClient.getUserDetails(String.valueOf(userId))));
+    public List<CartItem> getCart(String userId) {
+        return cartItemRepository.findByUserId(userId);
     }
 
     public void clearCart(String userId) {

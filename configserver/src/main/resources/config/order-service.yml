@@ -2,8 +2,8 @@
 spring:
   datasource:
     url: jdbc:postgresql://localhost:5432/order_db
-    username: ${DB_USER}
-    password: ${DB_PASSWORD}
+    username: ecom_job_app
+    password: Neel@007
     jpa:
       database: POSTGRESQL
       show-sql: true

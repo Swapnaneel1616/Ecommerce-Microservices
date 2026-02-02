@@ -45,9 +45,9 @@ public class GatewayConfig {
                         .path("/api/users/**")
 //                        .filters(f->f.rewritePath("/users(?<segment>/?.*)" , "/api/users${segment}"))
                         .uri("lb://USER-SERVICE"))
-                .route("order-service" , r->r
-                        .path("/api/order/**", "/api/cart/**")
-//                        .filters(f->f.rewritePath("/(?<segment>.*)" , "/api$(segment)"))
+                // Added order-service route so gateway will forward /api/cart and /api/orders to ORDER-SERVICE
+                .route("order-service", r -> r
+                        .path("/api/orders/**", "/api/cart/**")
                         .uri("lb://ORDER-SERVICE"))
                 .route("eureka-service" , r->r
                         .path("/eureka/main")

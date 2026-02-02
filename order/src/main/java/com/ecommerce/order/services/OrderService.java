@@ -32,7 +32,7 @@ public class OrderService {
     @Autowired
     private RabbitTemplate rabbitTemplate;
 
-    public Optional<OrderResponse> createOrder(UserResponse userId) {
+    public Optional<OrderResponse> createOrder(String userId) {
         //Validate Cart items
         List<CartItem> cartItems = cartService.getCart(userId);
         if(cartItems.isEmpty()){
