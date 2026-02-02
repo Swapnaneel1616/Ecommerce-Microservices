@@ -1,6 +1,7 @@
 package com.ecommerce.order.controllers;
 
 import com.ecommerce.order.dto.OrderResponse;
+import com.ecommerce.order.dto.UserResponse;
 import com.ecommerce.order.services.OrderService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -18,7 +19,7 @@ public class OrderController {
     private OrderService orderService;
 
     @PostMapping
-    public ResponseEntity<OrderResponse> createOrder(@RequestHeader("X-user-id")String userId){
+    public ResponseEntity<OrderResponse> createOrder(@RequestHeader("X-user-id") UserResponse userId){
         return orderService.createOrder(userId)
                 .map(orderResponse -> new ResponseEntity<>(orderResponse,HttpStatus.CREATED))
                 .orElseGet(() -> ResponseEntity.badRequest().build());

@@ -1,6 +1,7 @@
 package com.ecommerce.order.controllers;
 
 import com.ecommerce.order.dto.CartItemRequest;
+import com.ecommerce.order.dto.UserResponse;
 import com.ecommerce.order.models.CartItem;
 import com.ecommerce.order.services.CartService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,7 +30,7 @@ public class CartController {
 
     @DeleteMapping("/items/{productId}")
     public ResponseEntity<?> removeFromCart(
-            @RequestHeader("X-User-ID") String userId ,
+            @RequestHeader("X-User-ID") UserResponse userId ,
             @PathVariable String productId){
 
         boolean deleted  = cartService.deleteItemFromCart(userId , productId);
@@ -38,7 +39,7 @@ public class CartController {
 
     @GetMapping
     public ResponseEntity<List<CartItem>> getCart(
-            @RequestHeader("X-User-ID") String userId) {
+            @RequestHeader("X-User-ID") UserResponse userId) {
         return ResponseEntity.ok(cartService.getCart(userId));
     }
 

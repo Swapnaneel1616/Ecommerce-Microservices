@@ -2,17 +2,20 @@ package com.ecommerce.order.services;
 
 import com.ecommerce.order.dto.OrderItemDTO;
 import com.ecommerce.order.dto.OrderResponse;
+import com.ecommerce.order.dto.UserResponse;
 import com.ecommerce.order.models.*;
 import com.ecommerce.order.repository.OrderRepository;
 import com.ecommerce.order.models.CartItem;
 import com.ecommerce.order.models.Order;
 import com.ecommerce.order.models.OrderItem;
 import com.ecommerce.order.models.OrderStatus;
+import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 
@@ -26,7 +29,10 @@ public class OrderService {
     @Autowired
     private OrderRepository orderRepository;
 
-    public Optional<OrderResponse> createOrder(String userId) {
+    @Autowired
+    private RabbitTemplate rabbitTemplate;
+
+    public Optional<OrderResponse> createOrder(UserResponse userId) {
         //Validate Cart items
         List<CartItem> cartItems = cartService.getCart(userId);
         if(cartItems.isEmpty()){
@@ -45,7 +51,7 @@ public class OrderService {
                 .reduce(BigDecimal.ZERO , BigDecimal::add);
         //Create an order
         Order order = new Order();
-        order.setUserId(userId);
+        order.setUserId(String.valueOf(userId));
         order.setStatus(OrderStatus.CONFIRMED);
         order.setTotalAmount(totalPrice);
         List<OrderItem> orderItems = cartItems.stream()
@@ -62,7 +68,10 @@ public class OrderService {
         Order saveOrder = orderRepository.save(order);
 
         //Clear the cart
-        cartService.clearCart(userId);
+        cartService.clearCart(String.valueOf(userId));
+
+        rabbitTemplate.convertAndSend("order.exchange" , "order.tracking" ,
+                Map.of("oderId" , saveOrder.getId(), "status" , "CREATED"));
 
         return Optional.of(mapToOrderResponse(saveOrder));
 
