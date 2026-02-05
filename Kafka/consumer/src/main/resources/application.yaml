@@ -1,0 +1,8 @@
+spring:
+  application:
+    name: consumer
+  Kafka:
+    consumer:
+      bootstrap-servers: localhost:9092
+server:
+  port: 3002
